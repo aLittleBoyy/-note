@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="insert">增加</string>
+    <string name="delete">删除</string>
+    <string name="all">显示全部</string>
+    <string name="select">查询</string>
+    <string name="username">姓名</string>
+    <string name="age">年齡</string>
+    <string name="delete_item">刪除條目</string>
+    <string name="title_activity_detailed">DetailedActivity</string>
+</resources>
