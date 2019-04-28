@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 
 import android.support.v7.app.AlertDialog;
-import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +16,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.jeq.myapplication.R;
+import com.jeq.myapplication.data.MyData;
+import com.jeq.myapplication.inter.MyListener;
 
 import static com.jeq.myapplication.activity.MainActivity.TAG;
 
@@ -31,13 +32,13 @@ public class MyDialogFragment extends DialogFragment implements View.OnClickList
     public static final String KEY = "key";
     private String edit_age;
     private String edit_name;
-    private MyListener listener;
+
     private int i;
+    private MyListener listener;
 
-
-    public interface MyListener{
+/* public interface MyListener{
         public void secContent(String info, int info2);
-    }
+    }*/
 
     @NonNull
     @Override
@@ -74,9 +75,11 @@ public class MyDialogFragment extends DialogFragment implements View.OnClickList
             case R.id.save:
                 //Toast.makeText(getActivity(), "dianji", Toast.LENGTH_SHORT).show();
                 //edit_name = String.valueOf(getName.getText());
-                Editable edit_name = getName.getText();
+                edit_name = getName.getText().toString().trim();
+
+
                 edit_age = getAge.getText().toString();
-                Log.d(TAG, "onClick: " +edit_name.toString().trim().length());
+                Log.d(TAG, "onClick: " +edit_name);
 
 
                 if (edit_name.length() == 0 || edit_age.length() == 0){
@@ -84,7 +87,12 @@ public class MyDialogFragment extends DialogFragment implements View.OnClickList
                     dialog.dismiss();
                 }else{
                     i = Integer.parseInt(edit_age);
-                    listener.secContent(edit_name.toString(), i);
+                    MyData myData = new MyData();
+                    myData.setName(edit_name);
+                    myData.setAge(i);
+                    listener.setContentData(myData);
+                    Toast.makeText(getActivity(), myData.getId()+myData.getName()+myData.getAge(), Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
                 }
 
                 break;

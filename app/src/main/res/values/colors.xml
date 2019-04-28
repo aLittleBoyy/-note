@@ -3,4 +3,8 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="in">#FCFCFC</color>
+    <color name="ring">#F7F7F7</color>
+    <color name="ringbg">#CAE1FF</color>
+    <color name="text">#EE3B3B</color>
 </resources>

@@ -10,16 +10,26 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".activity.TopActivity"
+            android:label="@string/title_activity_top"
+            android:theme="@style/AppTheme.NoActionBar">
+
+
+        </activity>
+        <activity
             android:name=".activity.DetailedActivity"
-            android:parentActivityName=".activity.MainActivity"
             android:label="@string/title_activity_detailed"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".activity.MainActivity">
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activity.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".activity.GoAndGuideActivity">
+
         </activity>
     </application>
 

@@ -25,6 +25,7 @@ public class SQLiteDao {
 
     /**
      * Insert my data.
+     * 添加数据
      *
      * @param name     the name
      * @param age      the age
@@ -47,7 +48,41 @@ public class SQLiteDao {
 
 
     /**
+     * Insert detailed my data.
+     * 详情页添加数据
+     * 描述和评价
+     * @param  @param database the database
+     * @return the my data
+     */
+    public static void insert_detailed(MyData mydata, SQLiteDatabase database){
+
+        //String descibe, String appraise,int row,
+        /*String sql = "update" + SQLiteSchema.Table.TABLE_NAME +" set"
+                     + SQLiteSchema.Colmuns.DESCRIBE + "= "+ "'" + descibe + "'"
+                     +" where " + SQLiteSchema.Colmuns.ID + "=" + row;*/
+
+        ContentValues values = new ContentValues();
+        values.put(SQLiteSchema.Colmuns.DESCRIBE, mydata.getDescribe());
+        values.put(SQLiteSchema.Colmuns.APPRIASE, mydata.getAppraise());
+        database.update(SQLiteSchema.Table.TABLE_NAME, values, "id=?",new String[]{mydata.getId()+""});
+
+
+        /*ContentValues values = new ContentValues();
+        values.put(SQLiteSchema.Colmuns.DESCRIBE, descibe);
+        values.put(SQLiteSchema.Colmuns.APPRIASE, appraise);
+
+        database.insert(SQLiteSchema.Table.TABLE_NAME, null, values);*/
+        /*myData = new MyData();
+        myData.setDescribe(values.getAsString(SQLiteSchema.Colmuns.DESCRIBE));
+        myData.setAppraise(values.getAsString(SQLiteSchema.Colmuns.APPRIASE));
+        String mname = myData.getName();
+        int mage = myData.getAge();*/
+        //return myData;
+    }
+
+    /**
      * Select list.
+     * 查询数据
      *
      * @param edit_text_search the edit text search
      * @param database         the database
@@ -80,6 +115,13 @@ public class SQLiteDao {
             return data;
     }
 
+    /**
+     * delete db
+     * 删除数据
+     *
+     * @param database the database
+     * @param name     the name
+     */
     public static void delete(SQLiteDatabase database, String name){
         /*String sql = "delete from "+ SQLiteSchema.Table.TABLE_NAME + " where " + SQLiteSchema.Colmuns.NAME + " = " +name;
         database.execSQL(sql);*/
@@ -87,4 +129,21 @@ public class SQLiteDao {
         database.delete(SQLiteSchema.Table.TABLE_NAME, "name=?", new String[]{name});
     }
 
+    public static void showDataList(SQLiteDatabase database, List<MyData> datas){
+        String sql = "select*from "+ SQLiteSchema.Table.TABLE_NAME;
+        Cursor cursor = database.rawQuery(sql, null);
+        while (cursor.moveToNext()){
+            int index = cursor.getColumnIndex(SQLiteSchema.Colmuns.NAME);
+            String name = cursor.getString(index);
+            int index1 = cursor.getColumnIndex(SQLiteSchema.Colmuns.AGE);
+            int age = cursor.getInt(index1);
+            int id = cursor.getInt(cursor.getColumnIndex(SQLiteSchema.Colmuns.ID));
+            myData = new MyData();
+            myData.setId(id);
+            myData.setName(name);
+            myData.setAge(age);
+            datas.add(myData);
+            Log.d(TAG, "showDataList: datas" + datas);
+        }
+    }
 }

@@ -1,12 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<TextView
-    android:id="@+id/textss"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:text="详情页"
-    android:gravity="center"
-    android:textSize="30dp"/>
-</android.support.constraint.ConstraintLayout>
+
+    <com.jeq.myapplication.view.StickyScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:id="@+id/textss"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:text="详情页"
+            android:gravity="center"
+            android:textSize="30dp"/>
+        <EditText
+            android:id="@+id/descibe"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+
+            />
+        <Button
+            android:id="@+id/save_detil"
+            android:text="保存"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+    </com.jeq.myapplication.view.StickyScrollView>

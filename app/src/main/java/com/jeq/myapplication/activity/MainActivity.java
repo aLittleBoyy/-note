@@ -1,31 +1,31 @@
 package com.jeq.myapplication.activity;
 
-import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Parcelable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.jeq.myapplication.adapter.MyAdaptper;
+import com.jeq.myapplication.adapter.RecyclerOnItemClickListener;
 import com.jeq.myapplication.fragment.MyDialogFragment;
 import com.jeq.myapplication.R;
 import com.jeq.myapplication.data.MyData;
 import com.jeq.myapplication.data.SQLiteSchema;
+import com.jeq.myapplication.inter.MyListener;
+import com.jeq.myapplication.utils.DB;
 import com.jeq.myapplication.utils.MyDbHelper;
 import com.jeq.myapplication.utils.SQLiteDao;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenu;
@@ -43,18 +43,19 @@ import java.util.List;
 /**
  * The type Main activity.
  */
-public class MainActivity extends AppCompatActivity implements View.OnClickListener ,MyDialogFragment.MyListener, SwipeRefreshLayout.OnRefreshListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener , MyListener, SwipeRefreshLayout.OnRefreshListener {
 
+    /**
+     * The constant TAG.
+     */
     public static final String TAG = "SQL";
 
-    private Context mcontext;
+
     private List<MyData> data;
     private MyAdaptper adapter;
     private Button insert;
-    private Button delete;
     private Button update;
     private Button select;
-    private MyDbHelper helper;
     private SQLiteDatabase database;
     private MyData myData;
     private MyDialogFragment fragment;
@@ -63,6 +64,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LinearLayout layout_search;
     private EditText search_text;
     private SwipeMenuRecyclerView list;
+    private MyData descibe;
+
 
 
     @Override
@@ -75,15 +78,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void createDB() {
-        helper = new MyDbHelper(this);
-        database = helper.getReadableDatabase();
+        database = DB.dbtabase(this);
     }
 
     private void initView() {
 
         layout = findViewById(R.id.swip);
+        layout.setRefreshing(false);
         layout_search = findViewById(R.id.search_layout);
         list = findViewById(R.id.recyclerView_list);
+
         registerForContextMenu(list);
         insert = findViewById(R.id.insert);
         update = findViewById(R.id.update);
@@ -97,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         LinearLayoutManager manager = new LinearLayoutManager(this);
         manager.setOrientation(LinearLayout.VERTICAL);
-        list.addItemDecoration(new DividerItemDecoration(this, manager.getOrientation()));
+        //list.addItemDecoration(new DividerItemDecoration(this, manager.getOrientation()));
         list.setLayoutManager(manager);
         layout.setOnRefreshListener(this);
 
@@ -132,17 +136,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
         upDateUI();
+        descibe = (MyData) getIntent().getSerializableExtra("des");
+        Log.d(TAG, "MainActivity----onResume接收详情过来的数据: "+ descibe);
     }
+
+    private void saveDetailed() {
+
+        /**
+         * 获取详情页描述
+         */
+     /*   Intent intent = getIntent();
+        MyData descibe= (MyData) intent.getCharSequenceExtra("des");
+*/
+
+
+        //String descibe = intent.getStringExtra("des");
+        Log.d(TAG, "upDateUI: " + descibe);
+
+        //SQLiteDao.insert_detailed(descibe, database);
+         /* int id = detailde_data.getId();
+        int age = detailde_data.getAge();
+        String name = detailde_data.getName();
+        String describe = detailde_data.getDescribe();
+        + id+age+name+describe*/
+        // Log.d(TAG, "MainActivity----onResume接收详情过来的数据: "+ descibe.getDescribe());
+    }
+
 
     private void upDateUI() {
 
         data = new ArrayList<>();
         showData();
-
+        //saveDetailed();
 
         //list.setAdapter(adapter);
         if (adapter == null){
@@ -160,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("int", (Serializable) data);
                 bundle.putInt("position", position);
-                Log.d("data",data.toString());
+                Log.d(TAG, "MainActivity----data:"+data.toString());
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -170,10 +200,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //Toast.makeText(getApplication(), "长" + position, Toast.LENGTH_LONG).show();
             }
         });
-        Log.d(TAG, "upDateUI: ");
 
     }
-
 
     @Override
     public void onClick(View v) {
@@ -188,29 +216,65 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.update:
-                Log.d(TAG, "onClick: update");
-                data.clear();
-                showData();
+                //data.clear();
                 layout_search.setVisibility(View.GONE);
                 search_text.setText("");
+                Log.d(TAG, "onClick: "+data.toString());
                 adapter = new MyAdaptper(data);
                 list.setAdapter(adapter);
+                adapter.setRecyclerViewOnclick(new RecyclerOnItemClickListener() {
+                    @Override
+                    public void onClickListener(RecyclerView.ViewHolder holder, View view, int position) {
+                        Intent intent = new Intent(getApplicationContext(), DetailedActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("int", (Serializable) data);
+                        bundle.putInt("position", position);
+
+                        Log.d("data",data.toString());
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onLongClickListener(RecyclerView.ViewHolder holder, View view, int position) {
+                        //Toast.makeText(getApplication(), "长" + position, Toast.LENGTH_LONG).show();
+                    }
+                });
                 break;
 
             case R.id.search_sql:
                 String edit_text_search = search_text.getText().toString();
-                List<MyData> search_data = SQLiteDao.select(edit_text_search, database);
-                Log.d(TAG, "onClick: " + search_data);
+                final List<MyData> search_data = SQLiteDao.select(edit_text_search, database);
+                Log.d(TAG, "onClick: " + search_data+edit_text_search);
                 //data.clear();
                 adapter = new MyAdaptper(search_data);
                 list.setAdapter(adapter);
+                adapter.setRecyclerViewOnclick(new RecyclerOnItemClickListener() {
+                    @Override
+                    public void onClickListener(RecyclerView.ViewHolder holder, View view, int position) {
+                        Intent intent = new Intent(getApplicationContext(), DetailedActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("int", (Serializable) search_data);
+                        bundle.putInt("position", position);
+                        Log.d("data",search_data.toString());
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onLongClickListener(RecyclerView.ViewHolder holder, View view, int position) {
+                        //Toast.makeText(getApplication(), "长" + position, Toast.LENGTH_LONG).show();
+                    }
+                });
                 break;
                 default:
         }
 
     }
 
-    @Override
+
+
+   /* @Override
     public void secContent(String info, int info2) {
 
         Log.d(TAG, "secContent: " + info+info2)  ;
@@ -221,26 +285,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fragment.onStop();
     }
 
+    @Override
+    public void secContentOnly(String info) {
+
+    }*/
+
+    @Override
+    public void setContentData(MyData datas) {
+        String name = datas.getName();
+        int age = datas.getAge();
+        MyData insert_data = SQLiteDao.insert(name, age, database);
+        data.add(insert_data);
+        adapter.notifyDataSetChanged();
+        fragment.onStop();
+    }
+
 
     private void showData() {
-        String sql = "select*from "+ SQLiteSchema.Table.TABLE_NAME;
+        /*String sql = "select*from "+ SQLiteSchema.Table.TABLE_NAME;
         Cursor cursor = database.rawQuery(sql, null);
         while (cursor.moveToNext()){
             int index = cursor.getColumnIndex(SQLiteSchema.Colmuns.NAME);
             String name = cursor.getString(index);
             int index1 = cursor.getColumnIndex(SQLiteSchema.Colmuns.AGE);
             int age = cursor.getInt(index1);
-
+            int id = cursor.getInt(cursor.getColumnIndex(SQLiteSchema.Colmuns.ID));
             myData = new MyData();
+            myData.setId(id);
             myData.setName(name);
             myData.setAge(age);
             data.add(myData);
-        }
+        }*/
+        SQLiteDao.showDataList(database, data);
     }
 
     //@Override
     public void onRefresh() {
-         layout_search.setVisibility(View.VISIBLE);
+        layout_search.setVisibility(View.VISIBLE);
         layout.setRefreshing(false);
     }
 

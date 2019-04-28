@@ -1,4 +1,4 @@
-package com.jeq.myapplication.activity;
+package com.jeq.myapplication.holder;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;

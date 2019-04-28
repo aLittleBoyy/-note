@@ -15,7 +15,7 @@ public abstract class SingleActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*setContentView(R.layout.activity_detailed);
+        setContentView(R.layout.activity_go_guide_base);
 
         FragmentManager manager = getSupportFragmentManager();
         fragment = manager.findFragmentById(R.id.frag);
@@ -23,7 +23,7 @@ public abstract class SingleActivity extends AppCompatActivity {
         if (fragment == null){
             fragment = onCreateFragment();
             manager.beginTransaction().add(R.id.frag, fragment).commit();
-        }*/
+        }
     }
 
 

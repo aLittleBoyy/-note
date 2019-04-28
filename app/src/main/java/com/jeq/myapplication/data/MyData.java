@@ -13,8 +13,15 @@ public class MyData implements Serializable{
     private int id;
     private String name;
     private int age;
-    //private List<MyData> data;
+    private String describe;
+    private String appraise;
 
+
+//private List<MyData> data;
+
+    /**
+     * Instantiates a new My data.
+     */
     public MyData() {
     }
 
@@ -25,14 +32,17 @@ public class MyData implements Serializable{
     /**
      * Instantiates a new My data.
      *
-     * @param id   the id
-     * @param name the name
-     * @param age  the age
+     * @param name     the name
+     * @param age      the age
+     * @param appraise the appraise
+     * @param describe the describe
      */
-    public MyData(String name, int age) {
+    public MyData(String name, int age, String appraise, String describe) {
 
         this.name = name;
         this.age = age;
+        this.appraise = appraise;
+        this.describe = describe;
     }
 
     /**
@@ -79,13 +89,49 @@ public class MyData implements Serializable{
     public int getAge() {
         return age;
     }
+    /**
+     * Gets describe.
+     *
+     * @return the describe
+     */
+    public String getDescribe() {
+        return describe;
+    }
 
+    /**
+     * Sets describe.
+     *
+     * @param describe the describe
+     */
+    public void setDescribe(String describe) {
+        this.describe = describe;
+    }
+
+    /**
+     * Gets appraise.
+     *
+     * @return the appraise
+     */
+    public String getAppraise() {
+        return appraise;
+    }
+
+    /**
+     * Sets appraise.
+     *
+     * @param appraise the appraise
+     */
+    public void setAppraise(String appraise) {
+        this.appraise = appraise;
+    }
     @Override
     public String toString() {
         return "MyData{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", age=" + age +
+                ", describe='" + describe + '\'' +
+                ", appraise='" + appraise + '\'' +
                 '}';
     }
 

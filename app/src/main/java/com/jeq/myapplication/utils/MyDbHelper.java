@@ -23,8 +23,23 @@ public class MyDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table " + SQLiteSchema.Table.TABLE_NAME + "("+SQLiteSchema.Colmuns.ID +" integer primary key autoincrement, "
-                +SQLiteSchema.Colmuns.NAME+" varchar(20), "+SQLiteSchema.Colmuns.AGE+" integer)");
+        /**
+         * create table test (
+         * id integer primary key autoincrement,
+         * name varchar(20),
+         * age integer,
+         * describe varchar(200),
+         * appriase archar(200)
+         * )
+         */
+        db.execSQL(
+                "create table " + SQLiteSchema.Table.TABLE_NAME + "("
+                        +SQLiteSchema.Colmuns.ID +" integer primary key autoincrement, "
+                        +SQLiteSchema.Colmuns.NAME+" varchar(20), "
+                        +SQLiteSchema.Colmuns.AGE+" integer,"
+                        +SQLiteSchema.Colmuns.DESCRIBE+" varchar(200), "
+                        +SQLiteSchema.Colmuns.APPRIASE+" varchar(200)"+
+                        ")");
 
     }
 
