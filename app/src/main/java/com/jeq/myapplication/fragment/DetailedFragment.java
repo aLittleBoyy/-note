@@ -59,16 +59,18 @@ public class DetailedFragment extends Fragment implements View.OnClickListener {
         descibe = view.findViewById(R.id.descibe);
         save = view.findViewById(R.id.save_detil);
         List<MyData> data  = new ArrayList<>();
-        SQLiteDao.showDataList(DB.dbtabase(getActivity()), data);
-
+        //data.add(list);
+        //SQLiteDao.showDataList(DB.dbtabase(getActivity()), data);
+        Log.d(TAG, "initView: 详情页中data"+ list.getDescribe());
         /**
          * describe 描述文本框，先判空，如果为空提示输入
          * 不为空可编辑
          * 保存先传到activity, 再传到 MaainActivity 保存数据库
          */
       /*  descibe.setText(list.getDescribe().trim());*/
+        descibe.setText(list.getDescribe());
         descibeText = descibe.getText();
-        isNull(descibeText);
+        isNull(list.getDescribe());
         save.setOnClickListener(this);
 
 
@@ -87,17 +89,20 @@ public class DetailedFragment extends Fragment implements View.OnClickListener {
             listener.secContentData(list);*/
            list.setDescribe(trim);
            SQLiteDao.insert_detailed(list, DB.dbtabase(getActivity()));
-           listener.setContentData(list);
-    }
+           //listener.setContentData(list);
+
+
 
     }
 
-    void isNull(Editable text){
-        if (text.length() == 0){
+    }
+
+    void isNull(String text){
+        if (text == null){
             Toast.makeText(getContext(), "输入框为空，请输入", Toast.LENGTH_SHORT).show();
             descibe.setHint("请输入描述");
         }else {
-
+            descibe.setSelection(list.getDescribe().length());
         }
     }
 

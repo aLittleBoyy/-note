@@ -133,15 +133,21 @@ public class SQLiteDao {
         String sql = "select*from "+ SQLiteSchema.Table.TABLE_NAME;
         Cursor cursor = database.rawQuery(sql, null);
         while (cursor.moveToNext()){
-            int index = cursor.getColumnIndex(SQLiteSchema.Colmuns.NAME);
-            String name = cursor.getString(index);
-            int index1 = cursor.getColumnIndex(SQLiteSchema.Colmuns.AGE);
-            int age = cursor.getInt(index1);
-            int id = cursor.getInt(cursor.getColumnIndex(SQLiteSchema.Colmuns.ID));
+            int index_name = cursor.getColumnIndex(SQLiteSchema.Colmuns.NAME);
+            int index_age = cursor.getColumnIndex(SQLiteSchema.Colmuns.AGE);
+            int index_id = cursor.getColumnIndex(SQLiteSchema.Colmuns.ID);
+            int index_describe = cursor.getColumnIndex(SQLiteSchema.Colmuns.DESCRIBE);
+
+            int age = cursor.getInt(index_age);
+            int id = cursor.getInt(index_id);
+            String describe = cursor.getString(index_describe);
+            String name = cursor.getString(index_name);
+
             myData = new MyData();
             myData.setId(id);
             myData.setName(name);
             myData.setAge(age);
+            myData.setDescribe(describe);
             datas.add(myData);
             Log.d(TAG, "showDataList: datas" + datas);
         }

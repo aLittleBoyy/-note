@@ -273,23 +273,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
-   /* @Override
-    public void secContent(String info, int info2) {
-
-        Log.d(TAG, "secContent: " + info+info2)  ;
-        //int i = Integer.valueOf(info2);
-        MyData insert_data = SQLiteDao.insert(info,  info2, database);
-        data.add(insert_data);
-        adapter.notifyDataSetChanged();
-        fragment.onStop();
-    }
-
-    @Override
-    public void secContentOnly(String info) {
-
-    }*/
-
     @Override
     public void setContentData(MyData datas) {
         String name = datas.getName();
@@ -302,20 +285,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private void showData() {
-        /*String sql = "select*from "+ SQLiteSchema.Table.TABLE_NAME;
-        Cursor cursor = database.rawQuery(sql, null);
-        while (cursor.moveToNext()){
-            int index = cursor.getColumnIndex(SQLiteSchema.Colmuns.NAME);
-            String name = cursor.getString(index);
-            int index1 = cursor.getColumnIndex(SQLiteSchema.Colmuns.AGE);
-            int age = cursor.getInt(index1);
-            int id = cursor.getInt(cursor.getColumnIndex(SQLiteSchema.Colmuns.ID));
-            myData = new MyData();
-            myData.setId(id);
-            myData.setName(name);
-            myData.setAge(age);
-            data.add(myData);
-        }*/
         SQLiteDao.showDataList(database, data);
     }
 
